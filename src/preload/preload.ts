@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld("api", {
     }
   },
   fetchThirdPartyData: () => ipcRenderer.invoke("fetch-third-party-data"),
+  fetchChatData: (data: any) => ipcRenderer.invoke("fetch-chat-data", data),
   send: (channel: string, data: any) => {
     ipcRenderer.send(channel, data);
   },
@@ -28,5 +29,3 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.on(channel, (event, ...args) => func(...args));
   },
 });
-
-console.log("API should be exposed now");

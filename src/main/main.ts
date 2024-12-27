@@ -60,3 +60,23 @@ ipcMain.handle("fetch-third-party-data", async () => {
     throw new Error((error as Error).message);
   }
 });
+
+ipcMain.handle("fetch-chat-data", async (event, data) => {
+  try {
+    const response = await fetch("http://localhost:3000/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+});
