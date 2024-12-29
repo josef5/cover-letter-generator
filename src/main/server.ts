@@ -1,11 +1,8 @@
 import cors from "cors";
-import dotenv from "dotenv";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import { OpenAI } from "openai";
 
-dotenv.config();
-
-export function startServer() {
+export async function startServer() {
   const server = express();
   const port = 3000;
   let openai: OpenAI;
@@ -18,11 +15,11 @@ export function startServer() {
 
   server.use(express.json());
 
-  server.get("/api/hello", (req, res) => {
+  /* server.get("/api/hello", (req, res) => {
     res.json({ message: "Hello from Express!" });
-  });
+  }); */
 
-  server.get("/api/third-party", async (req, res) => {
+  /* server.post("/api/third-party", async (req, res) => {
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/posts",
@@ -36,18 +33,15 @@ export function startServer() {
       console.error("Error fetching third-party data:", error);
       res.status(500).json({ error: (error as Error).message });
     }
-  });
+  }); */
 
-  server.post("/api/chat", async (req: Request, res: Response) => {
+  server.post("/api/chat", async (req, res) => {
     const {
       jobDescription,
       salutation,
       additionalNotes,
       settings: { apiKey, name, model, temperature, wordLimit, workExperience },
     } = req.body;
-
-    // openai = new OpenAI({ apiKey });
-    openai = new OpenAI({ apiKey: process.env.OPENAI_KEY }); // TODO: revert to supplied API key
 
     if (!jobDescription) {
       res.status(400).json({ error: "Job description required" });
@@ -62,6 +56,9 @@ export function startServer() {
     const prompt = `Here is a job description, write a cover letter for this job on behalf of the user: ${jobDescription}. `;
 
     try {
+      // openai = new OpenAI({ apiKey });
+      openai = new OpenAI({ apiKey: process.env.OPENAI_KEY }); // TODO: revert to supplied API key
+
       const chatCompletion = await openai.chat.completions.create({
         messages: [
           {

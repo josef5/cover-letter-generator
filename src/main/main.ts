@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import { startServer } from "./server";
+import dotenv from "dotenv";
 
 // Disable Node.js integration in renderer
 app.enableSandbox();
@@ -28,11 +29,17 @@ async function createWindow() {
   } else {
     await mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
+
+  dotenv.config({
+    path: app.isPackaged
+      ? path.join(process.resourcesPath, ".env")
+      : path.resolve(process.cwd(), ".env"),
+  });
 }
 
 app.whenReady().then(() => {
-  createWindow();
   startServer();
+  createWindow();
 });
 
 app.on("window-all-closed", () => {
@@ -47,9 +54,15 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.handle("fetch-third-party-data", async () => {
+/* ipcMain.handle("fetch-third-party-data", async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/third-party");
+    const response = await fetch("http://localhost:3000/api/third-party", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,7 +72,7 @@ ipcMain.handle("fetch-third-party-data", async () => {
   } catch (error) {
     throw new Error((error as Error).message);
   }
-});
+}); */
 
 ipcMain.handle("fetch-chat-data", async (event, data) => {
   try {
@@ -75,7 +88,7 @@ ipcMain.handle("fetch-chat-data", async (event, data) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return response.json();
+    return await response.json();
   } catch (error) {
     throw new Error((error as Error).message);
   }

@@ -83,14 +83,16 @@
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
-        "dmg",
-        "zip"
+        "default"
       ],
       "identity": "Your Developer ID",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist"
-    }
+    },
+    "extraResources": [
+      ".env"
+    ]
   }
 }

@@ -51,13 +51,15 @@ function App() {
     // fetchCompletion(data); // TODO: uncomment
 
     // testAPI();
+    // testAPI2();
+
     fetchChat(data);
   }
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  async function testAPI() {
+  /* async function testAPI() {
     try {
       if (!window.api?.sayHello) {
         throw new Error("API not available");
@@ -71,6 +73,29 @@ function App() {
     }
   }
 
+  const testAPI2 = async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      if (!window.api?.fetchThirdPartyData) {
+        throw new Error("API not available");
+      }
+
+      const response = await window.api.fetchThirdPartyData();
+
+      console.log("[App] response :", response);
+      setCoverLetterText(JSON.stringify(response, null, 2));
+    } catch (error) {
+      console.error("Error:", error);
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }; */
+
   async function fetchChat(userData: UserData) {
     console.log("fetchChat", userData);
     setCoverLetterText("");
@@ -83,8 +108,9 @@ function App() {
       if (!window.api?.fetchChatData) {
         throw new Error("API not available");
       }
+
       const data = await window.api.fetchChatData(userData);
-      // console.log("response :", response);
+      console.log("data :", data);
 
       console.log("response: ", data.chatCompletion.choices[0].message.content);
       setCoverLetterText(data.chatCompletion.choices[0].message.content);
@@ -101,7 +127,7 @@ function App() {
   async function fetchCompletion(userData: UserData) {
     console.log("userData :", userData);
 
-    //*
+    /*
     try {
       setCoverLetterText("");
       setError(null);
