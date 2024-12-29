@@ -50,59 +50,16 @@ function App() {
     setAccordionValue("close");
     // fetchCompletion(data); // TODO: uncomment
 
-    // testAPI();
-    // testAPI2();
-
     fetchChat(data);
   }
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  /* async function testAPI() {
-    try {
-      if (!window.api?.sayHello) {
-        throw new Error("API not available");
-      }
-      const response = await window.api.sayHello();
-    } catch (error) {
-      console.error("Error:", error);
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred",
-      );
-    }
-  }
-
-  const testAPI2 = async () => {
-    setIsLoading(true);
-    setError("");
-
-    try {
-      if (!window.api?.fetchThirdPartyData) {
-        throw new Error("API not available");
-      }
-
-      const response = await window.api.fetchThirdPartyData();
-
-      console.log("[App] response :", response);
-      setCoverLetterText(JSON.stringify(response, null, 2));
-    } catch (error) {
-      console.error("Error:", error);
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }; */
-
   async function fetchChat(userData: UserData) {
-    console.log("fetchChat", userData);
     setCoverLetterText("");
     setError(null);
     setIsLoading(true);
-
-    // await sleep(1000);
 
     try {
       if (!window.api?.fetchChatData) {

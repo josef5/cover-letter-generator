@@ -4,23 +4,6 @@ console.log("Preload script is running");
 
 // API exposed to renderer
 contextBridge.exposeInMainWorld("api", {
-  sayHello: async () => {
-    console.log("sayHello was called");
-    try {
-      const response = await fetch("http://localhost:3000/api/hello");
-      console.log("response :", response);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      return response.json();
-    } catch (error) {
-      console.error("Fetch error:", error);
-      throw error;
-    }
-  },
-  fetchThirdPartyData: () => ipcRenderer.invoke("fetch-third-party-data"),
   fetchChatData: (data: any) => ipcRenderer.invoke("fetch-chat-data", data),
   send: (channel: string, data: any) => {
     ipcRenderer.send(channel, data);
