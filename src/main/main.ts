@@ -54,9 +54,9 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.handle("fetch-chat-data", async (event, data) => {
+ipcMain.handle("fetch-completion", async (event, data) => {
   try {
-    const response = await fetch("http://localhost:3000/api/chat", {
+    const response = await fetch("http://localhost:3000/api/completion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

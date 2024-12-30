@@ -15,7 +15,7 @@ export async function startServer() {
 
   server.use(express.json());
 
-  server.post("/api/chat", async (req, res) => {
+  server.post("/api/completion", async (req, res) => {
     const {
       jobDescription,
       salutation,

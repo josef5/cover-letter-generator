@@ -48,63 +48,25 @@ function App() {
 
   function onSubmit(data: FormValues) {
     setAccordionValue("close");
-    // fetchCompletion(data); // TODO: uncomment
 
-    fetchChat(data);
+    fetchCoverLetterText(data);
   }
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  async function fetchChat(userData: UserData) {
+  async function fetchCoverLetterText(userData: UserData) {
     setCoverLetterText("");
     setError(null);
     setIsLoading(true);
 
+    /*
     try {
-      if (!window.api?.fetchChatData) {
+      if (!window.api?.fetchCompletion) {
         throw new Error("API not available");
       }
 
-      const data = await window.api.fetchChatData(userData);
-      console.log("data :", data);
-
-      console.log("response: ", data.chatCompletion.choices[0].message.content);
-      setCoverLetterText(data.chatCompletion.choices[0].message.content);
-    } catch (error) {
-      console.error("Error:", error);
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function fetchCompletion(userData: UserData) {
-    console.log("userData :", userData);
-
-    /*
-    try {
-      setCoverLetterText("");
-      setError(null);
-      setIsLoading(true);
-
-      const response = await fetch("http://localhost:3000/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Server error. Status: ${response.status}: ${response.statusText}`,
-        );
-      }
-
-      const data = await response.json();
+      const data = await window.api.fetchCompletion(userData);
 
       console.log("response: ", data.chatCompletion.choices[0].message.content);
       setCoverLetterText(data.chatCompletion.choices[0].message.content);
