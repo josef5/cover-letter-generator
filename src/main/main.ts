@@ -3,6 +3,15 @@ import * as path from "path";
 import { startServer } from "./server";
 import dotenv from "dotenv";
 
+// In production load .env from resources
+dotenv.config({
+  path: app.isPackaged
+    ? path.join(process.resourcesPath, ".env")
+    : path.resolve(process.cwd(), ".env"),
+});
+
+const port = process.env.PORT ?? 51515;
+
 // Disable Node.js integration in renderer
 app.enableSandbox();
 
@@ -12,8 +21,8 @@ async function createWindow() {
   const isDev = (await import("electron-is-dev")).default;
 
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 960,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -29,12 +38,6 @@ async function createWindow() {
   } else {
     await mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
-
-  dotenv.config({
-    path: app.isPackaged
-      ? path.join(process.resourcesPath, ".env")
-      : path.resolve(process.cwd(), ".env"),
-  });
 }
 
 app.whenReady().then(() => {
@@ -56,7 +59,7 @@ app.on("activate", () => {
 
 ipcMain.handle("fetch-completion", async (event, data) => {
   try {
-    const response = await fetch("http://localhost:3000/api/completion", {
+    const response = await fetch(`http://localhost:${port}/api/completion`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

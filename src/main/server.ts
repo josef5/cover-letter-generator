@@ -4,7 +4,7 @@ import { OpenAI } from "openai";
 
 export async function startServer() {
   const server = express();
-  const port = 3000;
+  const port = process.env.PORT ?? 51515;
   let openai: OpenAI;
 
   server.use(
@@ -23,6 +23,7 @@ export async function startServer() {
       settings: { apiKey, name, model, temperature, wordLimit, workExperience },
     } = req.body;
 
+    // TODO: test error reporting
     if (!jobDescription) {
       res.status(400).json({ error: "Job description required" });
       return;
