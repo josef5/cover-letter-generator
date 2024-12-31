@@ -12,7 +12,8 @@
     "dev": "concurrently \"vite\" \"npm run dev:electron\"",
     "dev:electron": "wait-on tcp:5000 && electron .",
     "watch": "tsc -w",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "build:dev": "npm run build && npm run dev"
   },
   "keywords": [],
   "author": "",
