@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import SettingsAccordion from "./components/SettingsAccordion";
+import SettingsAccordion from "./components/settings-accordion";
 import { Button } from "./components/ui/button";
 import {
   Form,
