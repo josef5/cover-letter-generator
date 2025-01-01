@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import SettingsAccordion from "./components/settings-accordion";
 import { Button } from "./components/ui/button";
@@ -26,6 +26,19 @@ function App() {
 
   // TODO: add persistence
 
+  useEffect(() => {
+    async function getStoredSettings() {
+      const settings = await window.api?.getStoreValues();
+      console.log("stored settings:", settings);
+
+      if (settings) {
+        form.setValue("settings", settings);
+      }
+    }
+
+    getStoredSettings();
+  }, []);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,6 +48,14 @@ function App() {
         "We are Awesome Co. and we are looking for a Software Engineer to join our team. You will be working on our core product, which is a platform that helps people write better cover letters. You will be responsible for building new features, fixing bugs, and improving the performance of our platform. The ideal candidate is passionate about writing clean code, has experience with React and Node.js, and is a great team player. If you are interested in this position, please send us your resume and a cover letter explaining why you are a good fit for this role.",
       additionalNotes: "",
       settings: {
+        apiKey: "",
+        name: "",
+        model: "gpt-3.5-turbo",
+        temperature: 0.7,
+        wordLimit: 300,
+        workExperience: "",
+      },
+      /* settings: {
         apiKey: "abc123",
         name: "Jose Espejo",
         model: "gpt-3.5-turbo",
@@ -42,12 +63,14 @@ function App() {
         wordLimit: 300,
         workExperience:
           "I am a frontend developer with 4 years of experience in React, Vue and TypeScript. In my last job I worked at a leading marketing agency; Tribal Worldwide, where our main client was Volkswagen and its subsidies Skoda and SEAT. I was a part of a team that developed and maintained a series of web apps in React and Typescript. A selection of my work can be viewed at https://joseespejo.info",
-      },
+      }, */
     },
   });
 
   function onSubmit(data: FormValues) {
     setAccordionValue("close");
+
+    window.api?.setStoreValues(data.settings);
 
     fetchCoverLetterText(data);
   }
@@ -89,7 +112,7 @@ function App() {
     // TODO: revert to use of API
     setIsLoading(true);
 
-    await sleep(3000);
+    await sleep(1000);
 
     setCoverLetterText("");
     setIsLoading(false);

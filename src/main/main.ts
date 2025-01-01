@@ -1,7 +1,9 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import * as path from "path";
-import { startServer } from "./server";
 import dotenv from "dotenv";
+import { app, BrowserWindow, ipcMain } from "electron";
+import Store, { Schema } from "electron-store";
+import * as path from "path";
+import { Settings } from "./../renderer/types/data";
+import { startServer } from "./server";
 
 // In production load .env from resources
 dotenv.config({
@@ -11,6 +13,19 @@ dotenv.config({
 });
 
 const port = process.env.PORT ?? 51515;
+
+type SettingsSchema = Schema<Settings>;
+
+const schema: SettingsSchema = {
+  apiKey: { type: "string" },
+  name: { type: "string" },
+  model: { type: "string" },
+  temperature: { type: "number" },
+  wordLimit: { type: "number" },
+  workExperience: { type: "string" },
+};
+
+const store = new Store<SettingsSchema>({ schema });
 
 // Disable Node.js integration in renderer
 app.enableSandbox();
@@ -38,6 +53,8 @@ async function createWindow() {
   } else {
     await mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
+
+  console.log("Store at: ", app.getPath("userData"));
 }
 
 app.whenReady().then(() => {
@@ -75,4 +92,20 @@ ipcMain.handle("fetch-completion", async (event, data) => {
   } catch (error) {
     throw new Error((error as Error).message);
   }
+});
+
+ipcMain.handle("getStoreValue", (event, key: string) => {
+  return store.get(key);
+});
+
+ipcMain.handle("setStoreValue", (event, key: string, value: string) => {
+  store.set(key, value);
+});
+
+ipcMain.handle("setStoreValues", (event, values: Schema<Settings>) => {
+  store.store = values;
+});
+
+ipcMain.handle("getStoreValues", (event) => {
+  return store.store;
 });
