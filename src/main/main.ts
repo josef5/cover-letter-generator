@@ -53,8 +53,6 @@ async function createWindow() {
   } else {
     await mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
-
-  console.log("Store at: ", app.getPath("userData"));
 }
 
 app.whenReady().then(() => {
@@ -84,11 +82,13 @@ ipcMain.handle("fetch-completion", async (event, data) => {
       body: JSON.stringify(data),
     });
 
+    const json = await response.json();
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(json.error);
     }
 
-    return await response.json();
+    return json;
   } catch (error) {
     throw new Error((error as Error).message);
   }

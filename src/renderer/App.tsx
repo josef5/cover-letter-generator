@@ -24,8 +24,6 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [accordionValue, setAccordionValue] = useState("default"); // State for accordion
 
-  // TODO: add persistence
-
   useEffect(() => {
     async function getStoredSettings() {
       const settings = await window.api?.getStoreValues();
@@ -91,19 +89,15 @@ function App() {
 
       const data = await window.api.fetchCompletion(userData);
 
-      console.log("response: ", data.chatCompletion.choices[0].message.content);
-      setCoverLetterText(data.chatCompletion.choices[0].message.content);
-    } catch (error) {
-      if (error instanceof TypeError) {
-        console.error("Network error fetching chat completion:", error);
-        setError("Network error fetching chat completion");
-
-        return;
-      } else {
-        console.error(error);
+      if (!data) {
+        throw new Error("API response is empty");
       }
 
-      setError(`${(error as Error).name}. ${(error as Error).message}`);
+      setCoverLetterText(data.chatCompletion.choices[0].message.content);
+    } catch (error) {
+      console.error(error);
+
+      setError((error as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -190,6 +184,7 @@ function App() {
                   accordionValue={accordionValue}
                   setAccordionValue={setAccordionValue}
                 />
+                {/* TODO: Disable button if form invalid */}
                 <Button type="submit">Generate</Button>
               </div>
             </form>

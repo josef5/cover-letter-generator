@@ -1,3 +1,4 @@
+import e from "cors";
 import cors from "cors";
 import express from "express";
 import { OpenAI } from "openai";
@@ -24,6 +25,12 @@ export async function startServer() {
     } = req.body;
 
     // TODO: test error reporting
+
+    if (!apiKey) {
+      res.status(400).json({ error: "API key required" });
+      return;
+    }
+
     if (!jobDescription) {
       res.status(400).json({ error: "Job description required" });
       return;
@@ -81,9 +88,9 @@ export async function startServer() {
 
       res.json({ chatCompletion });
     } catch (error) {
-      res.status(500).json({
-        error: `An error occurred while processing your request: ${error}`,
-      });
+      res
+        .status((error as any).status)
+        .json({ error: (error as Error).message });
     }
   });
 
