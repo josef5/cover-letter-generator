@@ -42,8 +42,8 @@ async function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, "..", "preload", "preload.js"),
-      sandbox: true, // Enable sandbox mode
-      webSecurity: true, // Enable web security
+      sandbox: true,
+      webSecurity: true,
     },
   });
 
@@ -61,9 +61,7 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on("activate", () => {
