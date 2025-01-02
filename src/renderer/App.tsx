@@ -24,21 +24,9 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [accordionValue, setAccordionValue] = useState("default"); // State for accordion
 
-  useEffect(() => {
-    async function getStoredSettings() {
-      const settings = await window.api?.getStoreValues();
-      console.log("stored settings:", settings);
-
-      if (settings) {
-        form.setValue("settings", settings);
-      }
-    }
-
-    getStoredSettings();
-  }, []);
-
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
       // TODO: remove placeholder values
       salutation: "Dear Hiring Manager,",
@@ -64,6 +52,13 @@ function App() {
       }, */
     },
   });
+
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = form;
+
+  // console.log("isValid :", isValid);
 
   function onSubmit(data: FormValues) {
     setAccordionValue("close");
@@ -127,13 +122,26 @@ function App() {
     ); //*/
   }
 
+  useEffect(() => {
+    async function getStoredSettings() {
+      const settings = await window.api?.getStoreValues();
+      console.log("stored settings:", settings);
+
+      if (settings) {
+        form.setValue("settings", settings, { shouldValidate: true });
+      }
+    }
+
+    getStoredSettings();
+  }, []);
+
   return (
     <div className="App mx-auto max-w-5xl">
       <div className="flex h-screen flex-col gap-4 py-4">
         <h1 className="text-base font-bold">Cover Letter Generator</h1>
         <FormProvider {...form}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-4">
                 <FormField
                   control={form.control}
@@ -184,8 +192,9 @@ function App() {
                   accordionValue={accordionValue}
                   setAccordionValue={setAccordionValue}
                 />
-                {/* TODO: Disable button if form invalid */}
-                <Button type="submit">Generate</Button>
+                <Button type="submit" disabled={!isValid}>
+                  Generate
+                </Button>
               </div>
             </form>
           </Form>
