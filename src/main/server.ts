@@ -24,10 +24,8 @@ export async function startServer() {
       settings: { apiKey, name, model, temperature, wordLimit, workExperience },
     } = req.body;
 
-    // TODO: test error reporting
-
     if (!apiKey) {
-      res.status(400).json({ error: "API key required" });
+      res.status(401).json({ error: "API key required" });
       return;
     }
 
