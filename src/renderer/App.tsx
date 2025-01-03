@@ -190,6 +190,7 @@ function App() {
                 <SettingsAccordion
                   accordionValue={accordionValue}
                   setAccordionValue={setAccordionValue}
+                  hasErrors={!!errors.settings}
                 />
                 <Button type="submit" disabled={!isValid}>
                   Generate

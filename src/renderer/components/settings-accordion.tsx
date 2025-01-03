@@ -25,9 +25,11 @@ import { Textarea } from "./ui/textarea";
 function SettingsAccordion({
   accordionValue,
   setAccordionValue,
+  hasErrors,
 }: {
   accordionValue: string;
   setAccordionValue: (value: string) => void;
+  hasErrors: boolean;
 }) {
   const { control } = useFormContext<FormValues>();
 
@@ -44,7 +46,9 @@ function SettingsAccordion({
       onValueChange={handleAccordionChange}
     >
       <AccordionItem value="fields" className="">
-        <AccordionTrigger className="rounded-lg border bg-neutral-800 px-4 text-sm">
+        <AccordionTrigger
+          className={`rounded-lg border bg-neutral-800 px-4 text-sm ${hasErrors ? "border-red-500 text-red-500" : ""}`}
+        >
           Settings
         </AccordionTrigger>
         <AccordionContent className="px-4">
