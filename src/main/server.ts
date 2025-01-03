@@ -77,7 +77,7 @@ export async function startServer() {
           },
           {
             role: "system",
-            content: `The cover letter should be about ${wordLimit} words long and should explain why you are a good fit for the job.`,
+            content: `The cover letter should be no more than ${wordLimit} words long and should explain why you are a good fit for the job.`,
           },
           { role: "system", content: additionalNotes ?? "" },
           { role: "user", content: prompt },
