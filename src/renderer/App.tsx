@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import SettingsAccordion from "./components/settings-accordion";
 import { Button } from "./components/ui/button";
@@ -17,12 +17,16 @@ import { Textarea } from "./components/ui/textarea";
 import "./index.css";
 import { formSchema, type FormValues } from "./lib/schemas/form-schema";
 import type { UserData } from "./types/data";
+import { Copy, CheckCircle } from "lucide-react";
 
 function App() {
   const [coverLetterText, setCoverLetterText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accordionValue, setAccordionValue] = useState("default"); // State for accordion
+  const [copied, setCopied] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<number>(0);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -57,8 +61,6 @@ function App() {
     handleSubmit,
     formState: { isValid },
   } = form;
-
-  // console.log("isValid :", isValid);
 
   function onSubmit(data: FormValues) {
     setAccordionValue("close");
@@ -122,6 +124,25 @@ function App() {
     ); //*/
   }
 
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(coverLetterText);
+      setCopied(true);
+
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+
+      // Reset copied state after 2 seconds
+      timeoutRef.current = window.setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  }
+
   useEffect(() => {
     async function getStoredSettings() {
       const settings = await window.api?.getStoreValues();
@@ -137,8 +158,8 @@ function App() {
 
   return (
     <div className="App mx-auto max-w-5xl">
-      <div className="flex h-screen flex-col gap-4 py-4">
-        <h1 className="text-base font-bold">Cover Letter Generator</h1>
+      <div className="flex h-screen flex-col gap-4 pb-4 pt-8">
+        <h1 className="text-base font-bold">Generate cover letter</h1>
         <FormProvider {...form}>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -206,13 +227,31 @@ function App() {
           </div>
         ) : (
           coverLetterText && (
-            <Textarea
-              // TODO: Add copy button
-              style={{ whiteSpace: "pre-line" }}
-              value={coverLetterText}
-              onChange={(event) => setCoverLetterText(event.target.value)}
-              className="flex-1 bg-white text-neutral-800"
-            ></Textarea>
+            <div
+              className="relative flex-1"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <Textarea
+                // TODO: Decompose this into a separate component
+                style={{ whiteSpace: "pre-line" }}
+                value={coverLetterText}
+                onChange={(event) => setCoverLetterText(event.target.value)}
+                className="box-border h-full border-collapse bg-white text-neutral-800"
+              ></Textarea>
+              {isHovered && coverLetterText && (
+                <Button
+                  className="absolute right-2 top-2 rounded-md p-2 transition-colors hover:bg-gray-300 hover:text-gray-800"
+                  onClick={handleCopy}
+                >
+                  {copied ? (
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <Copy className="h-5 w-5" />
+                  )}
+                </Button>
+              )}
+            </div>
           )
         )}
       </div>
