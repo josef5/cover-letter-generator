@@ -125,7 +125,7 @@ function App() {
       const settings = await window.api?.getStoreValues();
       console.log("stored settings:", settings);
 
-      if (settings) {
+      if (Object.keys(settings).length > 0) {
         form.setValue("settings", settings, { shouldValidate: true });
       }
     }
