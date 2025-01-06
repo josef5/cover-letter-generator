@@ -74,7 +74,6 @@ function App() {
     setError(null);
     setIsLoading(true);
 
-    /*
     try {
       if (!window.api?.fetchCompletion) {
         throw new Error("API not available");
@@ -94,30 +93,6 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-
-    /*/
-    // TODO: revert to use of API
-    setIsLoading(true);
-
-    await sleep(1000);
-
-    setCoverLetterText("");
-    setIsLoading(false);
-    setError(null);
-
-    setCoverLetterText(
-      `Lorem ipsum odor amet, consectetuer adipiscing elit. Inceptos pellentesque turpis; primis pellentesque luctus in. Viverra sagittis dictum amet maecenas finibus aenean viverra semper. Parturient blandit fermentum tristique amet posuere? Phasellus lacus conubia neque auctor nisi per lectus. Eu pharetra habitant et vehicula nascetur dolor ut. Odio curabitur tempor efficitur fusce potenti. Posuere a dui venenatis gravida velit posuere. Habitasse nascetur vivamus feugiat mauris orci.
-
-      Amet platea ante fusce eu auctor ornare ante. Nam class blandit dui ad orci imperdiet convallis dis mi. Enim placerat mattis inceptos purus maecenas taciti phasellus ornare. Enim sagittis eros nulla non primis. Placerat praesent mus volutpat aptent ex pharetra nullam fringilla orci. Ligula nec iaculis iaculis interdum non a eleifend. Velit magna dictum; lorem dignissim per sem. Amet egestas per donec; semper molestie curabitur. Dui sapien platea at mauris luctus mattis donec.
-
-      Netus eros velit placerat porta nullam. Habitant volutpat sed pellentesque ac rutrum metus massa. Faucibus eget nascetur elit; torquent luctus ex euismod. Senectus mus conubia tortor tempus imperdiet in donec cubilia netus. Magna arcu risus vel; aptent nec egestas? Eu suspendisse auctor quam posuere fermentum pharetra convallis. Consectetur commodo elit mi taciti tortor torquent. Erat viverra orci nisi non porttitor vivamus efficitur porttitor.
-      
-      Lorem ipsum odor amet, consectetuer adipiscing elit. Inceptos pellentesque turpis; primis pellentesque luctus in. Viverra sagittis dictum amet maecenas finibus aenean viverra semper. Parturient blandit fermentum tristique amet posuere? Phasellus lacus conubia neque auctor nisi per lectus. Eu pharetra habitant et vehicula nascetur dolor ut. Odio curabitur tempor efficitur fusce potenti. Posuere a dui venenatis gravida velit posuere. Habitasse nascetur vivamus feugiat mauris orci.
-
-      Amet platea ante fusce eu auctor ornare ante. Nam class blandit dui ad orci imperdiet convallis dis mi. Enim placerat mattis inceptos purus maecenas taciti phasellus ornare. Enim sagittis eros nulla non primis. Placerat praesent mus volutpat aptent ex pharetra nullam fringilla orci. Ligula nec iaculis iaculis interdum non a eleifend. Velit magna dictum; lorem dignissim per sem. Amet egestas per donec; semper molestie curabitur. Dui sapien platea at mauris luctus mattis donec.
-
-      Netus eros velit placerat porta nullam. Habitant volutpat sed pellentesque ac rutrum metus massa. Faucibus eget nascetur elit; torquent luctus ex euismod. Senectus mus conubia tortor tempus imperdiet in donec cubilia netus. Magna arcu risus vel; aptent nec egestas? Eu suspendisse auctor quam posuere fermentum pharetra convallis. Consectetur commodo elit mi taciti tortor torquent. Erat viverra orci nisi non porttitor vivamus efficitur porttitor.`,
-    ); //*/
   }
 
   useEffect(() => {
