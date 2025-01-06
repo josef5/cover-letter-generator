@@ -55,7 +55,7 @@ function App() {
 
   const {
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = form;
 
   function onSubmit(data: FormValues) {
