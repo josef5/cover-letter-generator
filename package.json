@@ -1,5 +1,5 @@
 {
-  "name": "electron-express-ts-tw-vite-app",
+  "name": "cover-letter-generator",
   "version": "1.0.0",
   "description": "Electron app that makes a third-party API request using Express",
   "main": "dist/main/main.js",
@@ -14,7 +14,8 @@
     "dev:electron": "wait-on tcp:5000 && electron .",
     "watch": "tsc -w",
     "dist": "npm run build && electron-builder",
-    "build:dev": "npm run build && npm run dev"
+    "build:dev": "npm run build && npm run dev",
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@playwright/test": "^1.49.1",
     "@types/cors": "^2.3.7",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",
@@ -74,8 +76,8 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.electron-express-ts-tw-vite.app",
-    "productName": "Electron Express TS TW Vite",
+    "appId": "com.joseespejo.cover-letter-generator",
+    "productName": "Cover Letter Generator",
     "directories": {
       "output": "release"
     },
