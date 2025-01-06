@@ -48,6 +48,7 @@ function SettingsAccordion({
       <AccordionItem value="fields" className="">
         <AccordionTrigger
           className={`rounded-lg border bg-neutral-800 px-4 text-sm ${hasErrors ? "border-red-500 text-red-500" : ""}`}
+          data-testid="settings-accordion-trigger"
         >
           Settings
         </AccordionTrigger>
@@ -94,7 +95,6 @@ function SettingsAccordion({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={control}
                 name="settings.model"
@@ -110,10 +110,14 @@ function SettingsAccordion({
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger
+                          className="w-full"
+                          data-testid="settings-model-select-trigger"
+                        >
                           <SelectValue placeholder="Model" />
                         </SelectTrigger>
                         <SelectContent className="w-full">
+                          {/* TODO: add more models? */}
                           <SelectItem value="gpt-3.5-turbo">
                             gpt-3.5-turbo
                           </SelectItem>
