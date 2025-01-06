@@ -29,10 +29,9 @@ function App() {
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
-      // TODO: remove placeholder values
       salutation: "Dear Hiring Manager,",
-      jobDescription:
-        "We are Awesome Co. and we are looking for a Software Engineer to join our team. You will be working on our core product, which is a platform that helps people write better cover letters. You will be responsible for building new features, fixing bugs, and improving the performance of our platform. The ideal candidate is passionate about writing clean code, has experience with React and Node.js, and is a great team player. If you are interested in this position, please send us your resume and a cover letter explaining why you are a good fit for this role.",
+      jobDescription: "",
+      // jobDescription: "We are Awesome Co. and we are looking for a Software Engineer to join our team. You will be working on our core product, which is a platform that helps people write better cover letters. You will be responsible for building new features, fixing bugs, and improving the performance of our platform. The ideal candidate is passionate about writing clean code, has experience with React and Node.js, and is a great team player. If you are interested in this position, please send us your resume and a cover letter explaining why you are a good fit for this role.",
       additionalNotes: "",
       settings: {
         apiKey: "",

@@ -1,4 +1,3 @@
-import e from "cors";
 import cors from "cors";
 import express from "express";
 import { OpenAI } from "openai";
@@ -39,11 +38,10 @@ export async function startServer() {
       return;
     }
 
-    const prompt = `Here is a job description, write a cover letter for this job on behalf of the user: ${jobDescription}. `;
+    const prompt = `Here is a job description, write a cover letter for this job on behalf of the user: ${jobDescription}.`;
 
     try {
-      // openai = new OpenAI({ apiKey });
-      openai = new OpenAI({ apiKey: process.env.OPENAI_KEY }); // TODO: revert to supplied API key
+      openai = new OpenAI({ apiKey });
 
       const chatCompletion = await openai.chat.completions.create({
         messages: [
