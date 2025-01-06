@@ -166,7 +166,10 @@ function App() {
                         <FormMessage className="text-xs" />
                       </FormLabel>
                       <FormControl>
-                        <Textarea {...field} />
+                        <Textarea
+                          {...field}
+                          placeholder="Paste job description here"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
