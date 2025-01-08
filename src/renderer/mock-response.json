@@ -1,0 +1,36 @@
+{
+  "chatCompletion": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Dear Hiring Manager,\n\nI am writing to express my interest in the Software Engineer position at Awesome Co. With 4 years of experience as a frontend developer specializing in React, Vue, and TypeScript, I am confident in my ability to contribute effectively to your team.\n\nIn my previous role at Tribal Worldwide, a leading marketing agency working with clients like Volkswagen, Skoda, and SEAT, I was involved in developing and maintaining web applications using React and TypeScript. This experience has equipped me with strong problem-solving skills, attention to detail, and a passion for writing clean and efficient code.\n\nI am excited about the opportunity to work on your core product that helps individuals improve their cover letters. My proficiency in React and Node.js, combined with my experience in building new features and enhancing platform performance, align well with the requirements of the role at Awesome Co.\n\nI am a dedicated team player who thrives in collaborative environments and enjoys taking on new challenges. I am confident that my technical skills and enthusiasm for creating high-quality software solutions make me a suitable candidate for this position.\n\nI have attached my resume for your review and invite you to visit my portfolio at https://joseespejo.info to see a selection of my work. Thank you for considering my application. I look forward to the possibility of contributing to the success of Awesome Co.\n\nWarm regards,\n\nJose Espejo",
+          "refusal": null,
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1736273100,
+    "id": "chatcmpl-An8EmR02DaugeFbF2dIuTJFjcz1fa",
+    "model": "gpt-3.5-turbo-0125",
+    "object": "chat.completion",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 274,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens": 369,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 643
+    }
+  }
+}
