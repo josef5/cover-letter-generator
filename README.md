@@ -2,6 +2,8 @@
 
 An Electron desktop app for MacOS using the OpenAI api.
 
+_Requires an OpenAI api key._
+
 ##### Dev
 
 Compile changes in _all processes_
