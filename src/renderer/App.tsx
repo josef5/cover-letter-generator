@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CopiableTextarea from "./components/copiable-textarea";
 import SettingsAccordion from "./components/settings-accordion";
@@ -17,13 +17,24 @@ import Spinner from "./components/ui/spinner";
 import { Textarea } from "./components/ui/textarea";
 import "./index.css";
 import { formSchema, type FormValues } from "./lib/schemas/form-schema";
+import { countChars } from "./lib/utils";
 import type { UserData } from "./types/data";
+
+function TokenCount({ children }: { children: React.ReactNode }) {
+  return <div className="pr-2 text-right text-xs">{children}</div>;
+}
 
 function App() {
   const [coverLetterText, setCoverLetterText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accordionValue, setAccordionValue] = useState("default"); // State for accordion
+  const [estimatedTokens, setEstimatedTokens] = useState(0);
+  const [usageData, setUsageData] = useState({
+    total: 0,
+    request: 0,
+    response: 0,
+  });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -56,6 +67,7 @@ function App() {
   const {
     handleSubmit,
     formState: { isValid, errors },
+    watch,
   } = form;
 
   function onSubmit(data: FormValues) {
@@ -65,9 +77,6 @@ function App() {
 
     fetchCoverLetterText(data);
   }
-
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
 
   async function fetchCoverLetterText(userData: UserData) {
     setCoverLetterText("");
@@ -79,11 +88,24 @@ function App() {
         throw new Error("API not available");
       }
 
+      // const data = await import("./mock-response.json");
       const data = await window.api.fetchCompletion(userData);
 
       if (!data) {
         throw new Error("API response is empty");
       }
+
+      const {
+        chatCompletion: {
+          usage: { total_tokens, prompt_tokens, completion_tokens },
+        },
+      } = data;
+
+      setUsageData({
+        total: total_tokens,
+        request: prompt_tokens,
+        response: completion_tokens,
+      });
 
       setCoverLetterText(data.chatCompletion.choices[0].message.content);
     } catch (error) {
@@ -98,7 +120,7 @@ function App() {
   useEffect(() => {
     async function getStoredSettings() {
       const settings = await window.api?.getStoreValues();
-      console.log("stored settings:", settings);
+      console.log("Stored settings:", settings);
 
       if (Object.keys(settings).length > 0) {
         form.setValue("settings", settings, { shouldValidate: true });
@@ -107,6 +129,27 @@ function App() {
 
     getStoredSettings();
   }, []);
+
+  useEffect(() => {
+    const subscription = watch((formValues) => {
+      const systemPromptChars = 500; // approx
+      const {
+        name = "",
+        workExperience = "",
+        wordLimit = 300,
+      } = formValues.settings ?? {};
+      const countableFormValues = {
+        ...formValues,
+        settings: { name, workExperience, wordLimit },
+      };
+      const formCharacterCount = countChars(countableFormValues);
+      const total = formCharacterCount + systemPromptChars;
+
+      setEstimatedTokens(Math.round(total / 4));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <div className="App mx-auto max-w-5xl">
@@ -172,6 +215,11 @@ function App() {
                 <Button type="submit" disabled={!isValid}>
                   Generate
                 </Button>
+                {!coverLetterText && (
+                  <TokenCount>
+                    Estimated token count in prompt: {estimatedTokens}
+                  </TokenCount>
+                )}
               </div>
             </form>
           </Form>
@@ -183,12 +231,18 @@ function App() {
           </div>
         ) : (
           coverLetterText && (
-            <CopiableTextarea
-              value={coverLetterText}
-              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setCoverLetterText(event.target?.value)
-              }
-            />
+            <>
+              <CopiableTextarea
+                value={coverLetterText}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setCoverLetterText(event.target?.value)
+                }
+              />
+              <TokenCount>
+                Tokens Used: {usageData.total} (Prompt: {usageData.request}
+                /Response: {usageData.response})
+              </TokenCount>
+            </>
           )
         )}
       </div>

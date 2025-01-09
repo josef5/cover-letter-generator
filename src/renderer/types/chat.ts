@@ -10,5 +10,10 @@ export interface ChatResponse {
         content: string;
       };
     }>;
+    usage: {
+      total_tokens: number;
+      prompt_tokens: number;
+      completion_tokens: number;
+    };
   };
 }
