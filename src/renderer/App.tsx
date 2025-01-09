@@ -32,8 +32,8 @@ function App() {
   const [estimatedTokens, setEstimatedTokens] = useState(0);
   const [usageData, setUsageData] = useState({
     total: 0,
-    request: 0,
-    response: 0,
+    prompt: 0,
+    completion: 0,
   });
 
   const form = useForm<FormValues>({
@@ -103,8 +103,8 @@ function App() {
 
       setUsageData({
         total: total_tokens,
-        request: prompt_tokens,
-        response: completion_tokens,
+        prompt: prompt_tokens,
+        completion: completion_tokens,
       });
 
       setCoverLetterText(data.chatCompletion.choices[0].message.content);
@@ -239,8 +239,8 @@ function App() {
                 }
               />
               <TokenCount>
-                Tokens Used: {usageData.total} (Prompt: {usageData.request}
-                /Response: {usageData.response})
+                Tokens Used: {usageData.total} (Prompt: {usageData.prompt}
+                /Completion: {usageData.completion})
               </TokenCount>
             </>
           )
