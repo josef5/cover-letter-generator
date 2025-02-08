@@ -1,5 +1,8 @@
-import { FormFieldContext, FormItemContext } from "@/contexts/form-contexts";
-import { useFormField } from "@/hooks/use-form-field";
+import {
+  FormFieldContext,
+  FormItemContext,
+} from "@/renderer/contexts/form-contexts";
+import { useFormField } from "@/renderer/hooks/use-form-field";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
@@ -11,8 +14,8 @@ import {
   FormProvider,
 } from "react-hook-form";
 
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { Label } from "@/renderer/components/ui/label";
+import { cn } from "@/renderer/lib/utils";
 
 const Form = FormProvider;
 

@@ -1,7 +1,7 @@
 import type {
   FormFieldContextValue,
   FormItemContextValue,
-} from "@/components/ui/form";
+} from "@/renderer/components/ui/form";
 import React from "react";
 
 export const FormItemContext = React.createContext<FormItemContextValue>(

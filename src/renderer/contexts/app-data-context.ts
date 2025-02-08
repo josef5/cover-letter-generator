@@ -1,4 +1,4 @@
-import { FormValues } from "@/lib/schemas/form-schema";
+import { FormValues } from "@/renderer/lib/schemas/form-schema";
 import { createContext, useContext } from "react";
 
 export type AppDataContextValue = {

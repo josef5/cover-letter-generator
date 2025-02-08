@@ -5,9 +5,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { defaultValues, useAppDataContext } from "@/contexts/app-data-context";
-import { type SettingsValues, settingsSchema } from "@/lib/schemas/form-schema";
+} from "@/renderer/components/ui/form";
+import {
+  defaultValues,
+  useAppDataContext,
+} from "@/renderer/contexts/app-data-context";
+import {
+  type SettingsValues,
+  settingsSchema,
+} from "@/renderer/lib/schemas/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useEffect } from "react";

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { FormValues } from "@/lib/schemas/form-schema";
+import { FormValues } from "@/renderer/lib/schemas/form-schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

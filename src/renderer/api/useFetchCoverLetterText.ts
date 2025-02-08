@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { type FormValues } from "@/lib/schemas/form-schema";
+import { type FormValues } from "@/renderer/lib/schemas/form-schema";
 import { OpenAI } from "openai";
-import { ChatResponse } from "@/types/chat";
+import { ChatResponse } from "@/renderer/types/chat";
 
 export function useFetchCoverLetterText() {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +15,7 @@ export function useFetchCoverLetterText() {
 
     try {
       /*
-      data = await import("@/../tests/mock-response.json");
+      data = await import("@/renderer/../tests/mock-response.json");
       await new Promise((resolve) => setTimeout(resolve, 1000));
       /*/
       const {

@@ -1,11 +1,11 @@
-import { useAppDataContext } from "@/contexts/app-data-context";
-import "@/index.css";
+import { useAppDataContext } from "@/renderer/contexts/app-data-context";
+import "@/renderer/index.css";
 import {
   type FormValues,
   type MainFormValues,
   mainFormSchema,
-} from "@/lib/schemas/form-schema";
-import { getEstimatedTokens } from "@/lib/utils";
+} from "@/renderer/lib/schemas/form-schema";
+import { getEstimatedTokens } from "@/renderer/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CornerUpRight, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ import { Input } from "./ui/input";
 import Spinner from "./ui/spinner";
 import { Textarea } from "./ui/textarea";
 import TokenCount from "./ui/token-count";
-import { defaultValues } from "@/contexts/app-data-context";
+import { defaultValues } from "@/renderer/contexts/app-data-context";
 import {
   Select,
   SelectContent,
