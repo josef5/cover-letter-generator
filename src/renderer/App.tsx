@@ -8,7 +8,6 @@ import {
   defaultValues,
   useAppDataContext,
 } from "./contexts/app-data-context";
-import "./index.css";
 import { type FormValues } from "./lib/schemas/form-schema";
 import { sleep } from "./lib/utils";
 import { ChatResponse } from "./types/chat";
