@@ -1,17 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
+/* @tailwind components; */ /* @tailwind utilities; */
 /* Change Autocomplete styles in Chrome*/
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
+input: -webkit-autofill,
+  input: -webkit-autofill: hover, input: -webkit-autofill: focus,
+  textarea: -webkit-autofill, textarea: -webkit-autofill: hover,
+  textarea: -webkit-autofill: focus, select: -webkit-autofill,
+  select: -webkit-autofill: hover, select: -webkit-autofill: focus {
   /* @apply bg-red-500 text-white; */
   /* background-color: red !important; */
   /* border: 1px solid green; */
