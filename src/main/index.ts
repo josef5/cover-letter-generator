@@ -2,6 +2,12 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import { handleFetchCompletion } from "./fetch-completion";
+import {
+  getMainFormSettingsStore,
+  getSettingsStore,
+  setMainFormSettingsStore,
+  setSettingsStore,
+} from "./store";
 
 function createWindow(): void {
   // Create the browser window.
@@ -10,7 +16,7 @@ function createWindow(): void {
     height: 960,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === "linux" ? { icon } : {}),
+    // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, "../preload/index.js"),
       sandbox: false,
@@ -33,7 +39,7 @@ function createWindow(): void {
   // Load the remote URL for development or the local html file for production.
   if (is.dev) {
     if (process.env["ELECTRON_RENDERER_URL"]) {
-    mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
+      mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
     }
     mainWindow.webContents.openDevTools();
   } else {
@@ -74,9 +80,16 @@ app.on("window-all-closed", () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-/* ipcMain.handle("fetch-completion", async (event, data) => {
-  console.log("foo", data);
-  return { message: "Hello from main process" };
-}); */
-
 ipcMain.handle("fetch-completion", handleFetchCompletion);
+
+ipcMain.handle("get-main-form-settings-store", getMainFormSettingsStore);
+
+ipcMain.handle("set-main-form-settings-store", (_, data) => {
+  setMainFormSettingsStore(data);
+});
+
+ipcMain.handle("get-settings-store", getSettingsStore);
+
+ipcMain.handle("set-settings-store", (_, data) => {
+  setSettingsStore(data);
+});

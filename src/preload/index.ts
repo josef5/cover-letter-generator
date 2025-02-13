@@ -4,6 +4,13 @@ import { electronAPI } from "@electron-toolkit/preload";
 
 // Custom APIs for renderer
 const api = {
+  getMainFormSettingsStore: () =>
+    ipcRenderer.invoke("get-main-form-settings-store"),
+  setMainFormSettingsStore: (data: FormValues) =>
+    ipcRenderer.invoke("set-main-form-settings-store", data),
+  getSettingsStore: () => ipcRenderer.invoke("get-settings-store"),
+  setSettingsStore: (data: FormValues) =>
+    ipcRenderer.invoke("set-settings-store", data),
   fetchCompletion: (data: FormValues) =>
     ipcRenderer.invoke("fetch-completion", data),
 };
