@@ -1,5 +1,5 @@
 {
-  "name": "electron-react-ts-vite",
+  "name": "cover-letter-generator-4",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
@@ -26,6 +26,8 @@
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-select": "^2.1.6",
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "electron-store": "^8.2.0",
