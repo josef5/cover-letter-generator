@@ -45,7 +45,7 @@ function SettingsForm({ onNavigate }: { onNavigate: () => void }) {
 
   const {
     control,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = form;
 
   const { appData, setAppData, setIsSettingsValid } = useAppDataContext();
@@ -217,7 +217,7 @@ function SettingsForm({ onNavigate }: { onNavigate: () => void }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={!isValid}>
+              <Button type="submit" disabled={!isValid || !isDirty}>
                 Save
               </Button>
             </div>
