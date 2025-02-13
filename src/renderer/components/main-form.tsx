@@ -1,13 +1,16 @@
-import { useAppDataContext } from "@/renderer/contexts/app-data-context";
+import {
+  defaultValues,
+  useAppDataContext,
+} from "@/renderer/contexts/app-data-context";
 import "@/renderer/index.css";
 import {
   type FormValues,
   type MainFormValues,
   mainFormSchema,
 } from "@/renderer/lib/schemas/form-schema";
-import { getEstimatedTokens } from "@/renderer/lib/utils";
+import { getEstimatedTokens, isObjectEmpty } from "@/renderer/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CornerUpRight, Settings } from "lucide-react";
+import { CornerUpRight, Save, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
@@ -20,10 +23,6 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import Spinner from "./ui/spinner";
-import { Textarea } from "./ui/textarea";
-import TokenCount from "./ui/token-count";
-import { defaultValues } from "@/renderer/contexts/app-data-context";
 import {
   Select,
   SelectContent,
@@ -31,7 +30,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Save } from "lucide-react";
+import Spinner from "./ui/spinner";
+import { Textarea } from "./ui/textarea";
+import TokenCount from "./ui/token-count";
 
 function MainForm({
   onNavigate,
@@ -72,15 +73,16 @@ function MainForm({
     onSubmit(compositeData);
   }
 
-  function handleSaveValues(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSaveValues(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
     const { model, temperature, wordLimit } = form.getValues();
 
-    localStorage.setItem(
-      "main-settings",
-      JSON.stringify({ model, temperature, wordLimit }),
-    );
+    await window.api.setMainFormSettingsStore({
+      model,
+      temperature,
+      wordLimit,
+    });
 
     // Update the form state so the button is disabled
     form.trigger();
@@ -118,31 +120,39 @@ function MainForm({
 
   // Update main form settings from localStorage, on mount
   useEffect(() => {
-    const storedData = localStorage.getItem("main-settings");
+    async function initializeFormSettings() {
+      const storedData = await window.api.getMainFormSettingsStore();
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
+      if (!isObjectEmpty(storedData)) {
+        form.reset({ ...form.getValues(), ...storedData });
+      } else {
+        // If no settings saved save default values to localStorage
+        const [model, temperature, wordLimit] = mainFormSettings;
 
-      form.reset({ ...form.getValues(), ...parsedData });
-    } else {
-      // If no settings saved save default values to localStorage
-      const [model, temperature, wordLimit] = mainFormSettings;
-
-      localStorage.setItem(
-        "main-settings",
-        JSON.stringify({ model, temperature, wordLimit }),
-      );
+        await window.api.setMainFormSettingsStore({
+          model,
+          temperature,
+          wordLimit,
+        });
+      }
     }
+
+    initializeFormSettings();
   }, [form]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update isMainSettingsSaved on main form settings change
   useEffect(() => {
-    const storedData = localStorage.getItem("main-settings");
-    const [model, temperature, wordLimit] = mainFormSettings;
+    async function checkIfMainSettingsSaved() {
+      const storedData = await window.api.getMainFormSettingsStore();
+      const [model, temperature, wordLimit] = mainFormSettings;
 
-    setIsMainSettingsSaved(
-      JSON.stringify({ model, temperature, wordLimit }) === storedData,
-    );
+      setIsMainSettingsSaved(
+        JSON.stringify({ model, temperature, wordLimit }) ===
+          JSON.stringify(storedData),
+      );
+    }
+
+    checkIfMainSettingsSaved();
   }, [form, mainFormSettings]);
 
   return (

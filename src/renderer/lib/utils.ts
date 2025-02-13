@@ -62,3 +62,6 @@ export function getEstimatedTokens(formValues: FormValues) {
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+export const isObjectEmpty = (obj: JsonObject) =>
+  Object.keys(obj).length === 0 && obj.constructor === Object;
