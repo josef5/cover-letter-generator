@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { isObjectEmpty } from "../lib/utils";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -50,10 +51,11 @@ function SettingsForm({ onNavigate }: { onNavigate: () => void }) {
 
   const { appData, setAppData, setIsSettingsValid } = useAppDataContext();
 
-  function handleSubmit(data: SettingsValues) {
+  async function handleSubmit(data: SettingsValues) {
     setAppData({ ...appData, settings: data });
     setIsSettingsValid(true);
-    localStorage.setItem("settings", JSON.stringify(data));
+
+    await window.api.setSettingsStore(data);
 
     onNavigate();
   }
@@ -69,16 +71,18 @@ function SettingsForm({ onNavigate }: { onNavigate: () => void }) {
     }
   }, [isValid]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update form data on mount, with localStorage
+  // Update form data on mount from with store
   useEffect(() => {
-    const storedData = localStorage.getItem("settings");
+    async function initializeFormSettings() {
+      const storedData = await window.api.getSettingsStore();
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-
-      form.reset(parsedData);
-      form.trigger();
+      if (!isObjectEmpty(storedData)) {
+        form.reset(storedData);
+        form.trigger();
+      }
     }
+
+    initializeFormSettings();
   }, [form]);
 
   return (

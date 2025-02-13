@@ -118,11 +118,12 @@ function MainForm({
     setEstimatedTokens(tokens);
   }, [appData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update main form settings from localStorage, on mount
+  // Update main form settings from store, on mount
   useEffect(() => {
     async function initializeFormSettings() {
       const storedData = await window.api.getMainFormSettingsStore();
 
+      // TODO: Try reversing the logic so that the condition is not negative
       if (!isObjectEmpty(storedData)) {
         form.reset({ ...form.getValues(), ...storedData });
       } else {
