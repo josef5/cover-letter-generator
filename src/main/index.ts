@@ -1,5 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
-import { join } from "path";
+import path, { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import { handleFetchCompletion } from "./fetch-completion";
 import {
@@ -9,9 +9,12 @@ import {
   setSettingsStore,
 } from "./store";
 
-function createWindow(): void {
+let mainWindow: BrowserWindow;
+let coverLetterWindow: BrowserWindow;
+
+function createMainWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1024,
     height: 960,
     show: false,
@@ -35,6 +38,11 @@ function createWindow(): void {
     return { action: "deny" };
   });
 
+  console.log(
+    'process.env["ELECTRON_RENDERER_URL"] :',
+    process.env["ELECTRON_RENDERER_URL"],
+  );
+
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev) {
@@ -45,6 +53,38 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
+}
+
+async function createCoverLetterWindow() {
+  coverLetterWindow = new BrowserWindow({
+    width: 760,
+    height: 900,
+    parent: mainWindow,
+    // modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      preload: join(__dirname, "../preload/index.js"),
+    },
+  });
+
+  if (is.dev) {
+    if (process.env["ELECTRON_RENDERER_URL"]) {
+      await coverLetterWindow.loadURL(
+        `${process.env["ELECTRON_RENDERER_URL"]}/cover-letter-window.html`,
+      );
+    }
+    coverLetterWindow.webContents.openDevTools();
+  } else {
+    await coverLetterWindow.loadFile(
+      join(__dirname, "../renderer/cover-letter-window.html"),
+    );
+  }
+
+  coverLetterWindow.webContents.send(
+    "send-text-to-window",
+    "Hello from main process",
+  );
 }
 
 // This method will be called when Electron has finished
@@ -64,12 +104,16 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on("ping", () => console.log("pong"));
 
-  createWindow();
+  createMainWindow();
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
+  });
+
+  ipcMain.on("open-cover-letter-window", () => {
+    createCoverLetterWindow();
   });
 });
 

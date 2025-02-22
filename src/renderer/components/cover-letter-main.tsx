@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import CoverLetterWindow from "./components/cover-letter-window";
-import "./index.css";
+import CoverLetterWindow from "./cover-letter-window";
+import "@/renderer/index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

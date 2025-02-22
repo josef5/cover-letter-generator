@@ -9,6 +9,10 @@ declare global {
       getSettingsStore: () => Promise<SettingsValues>;
       setSettingsStore: (data: SettingsValues) => Promise<void>;
       fetchCompletion: (data: FormValues) => Promise<ChatResponse>;
+      openCoverLetterWindow: () => void;
+      handleCoverLetterData: (
+        listener: (event: IpcRendererEvent, ...args: any[]) => void,
+      ) => void;
     };
   }
 }

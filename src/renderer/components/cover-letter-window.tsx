@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CopiableTextarea from "./ui/copiable-textarea";
 import TokenCount from "./ui/token-count";
+import type { IpcRendererEvent } from "electron";
 
 function CoverLetterWindow({
   text,
@@ -9,12 +10,12 @@ function CoverLetterWindow({
   text: string;
   usageData: { total: number; prompt: number; completion: number };
 }) {
-  // Get text from url params
-  const urlParams = new URLSearchParams(window.location.search);
   const [coverLetterText, setCoverLetterText] = useState(text);
 
   useEffect(() => {
-    // window.coverLetterWindow.test();
+    window.api.handleCoverLetterData((_: IpcRendererEvent, data: any) => {
+      console.log("Received text from main", data);
+    });
   }, []);
 
   return (
