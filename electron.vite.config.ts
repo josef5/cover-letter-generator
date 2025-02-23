@@ -16,6 +16,17 @@ export default defineConfig({
         "@": resolve(__dirname, "./src"),
       },
     },
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, "src/renderer/index.html"),
+          "cover-letter-window": resolve(
+            __dirname,
+            "src/renderer/cover-letter-window.html",
+          ),
+        },
+      },
+    },
     plugins: [react()],
   },
 });
