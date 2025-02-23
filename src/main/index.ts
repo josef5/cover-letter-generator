@@ -19,6 +19,7 @@ function createMainWindow(): void {
     height: 960,
     show: false,
     autoHideMenuBar: true,
+    // TODO: Add icon
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
       preload: path.join(__dirname, "../preload/index.js"),
@@ -38,11 +39,6 @@ function createMainWindow(): void {
     return { action: "deny" };
   });
 
-  console.log(
-    'process.env["ELECTRON_RENDERER_URL"] :',
-    process.env["ELECTRON_RENDERER_URL"],
-  );
-
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev) {
@@ -55,7 +51,7 @@ function createMainWindow(): void {
   }
 }
 
-async function createCoverLetterWindow() {
+async function createCoverLetterWindow(data: any) {
   coverLetterWindow = new BrowserWindow({
     width: 760,
     height: 900,
@@ -66,6 +62,10 @@ async function createCoverLetterWindow() {
       contextIsolation: false,
       preload: path.join(__dirname, "../preload/index.js"),
     },
+  });
+
+  coverLetterWindow.webContents.once("did-finish-load", () => {
+    coverLetterWindow.webContents.send("send-text-to-window", data);
   });
 
   if (is.dev) {
@@ -80,11 +80,6 @@ async function createCoverLetterWindow() {
       path.join(__dirname, "../renderer/cover-letter-window.html"),
     );
   }
-
-  coverLetterWindow.webContents.send(
-    "send-text-to-window",
-    "Hello from main process",
-  );
 }
 
 // This method will be called when Electron has finished
@@ -112,8 +107,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
   });
 
-  ipcMain.on("open-cover-letter-window", () => {
-    createCoverLetterWindow();
+  ipcMain.on("open-cover-letter-window", (_, data) => {
+    createCoverLetterWindow(data);
   });
 });
 

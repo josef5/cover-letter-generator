@@ -13,7 +13,8 @@ const api = {
     ipcRenderer.invoke("set-settings-store", data),
   fetchCompletion: (data: FormValues) =>
     ipcRenderer.invoke("fetch-completion", data),
-  openCoverLetterWindow: () => ipcRenderer.send("open-cover-letter-window"),
+  openCoverLetterWindow: (data: any) =>
+    ipcRenderer.send("open-cover-letter-window", data),
   handleCoverLetterData: (
     listener: (event: IpcRendererEvent, ...args: any[]) => void,
   ) => ipcRenderer.on("send-text-to-window", listener),

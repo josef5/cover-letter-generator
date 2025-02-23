@@ -50,11 +50,7 @@ function AppContent() {
       completion: completion_tokens,
     });
 
-    setCoverLetterText(
-      (completion?.choices[0].message.content as string) ?? "",
-    );
-
-    navigateTo("cover-letter");
+    window.api.openCoverLetterWindow({ text: coverLetterText, usageData });
   }
 
   async function navigateTo(to: "main" | "settings" | "cover-letter") {

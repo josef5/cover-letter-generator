@@ -14,7 +14,7 @@ function CoverLetterWindow({
 
   useEffect(() => {
     window.api.handleCoverLetterData((_: IpcRendererEvent, data: any) => {
-      console.log("Received text from main", data);
+      console.log("Received text from main:", data);
     });
   }, []);
 
