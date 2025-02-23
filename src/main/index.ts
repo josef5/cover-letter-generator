@@ -1,6 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain } from "electron";
-import path, { join } from "path";
-import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+import { electronApp, is, optimizer } from "@electron-toolkit/utils";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
+import path from "path";
 import { handleFetchCompletion } from "./fetch-completion";
 import {
   getMainFormSettingsStore,
@@ -21,7 +21,7 @@ function createMainWindow(): void {
     autoHideMenuBar: true,
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, "../preload/index.js"),
+      preload: path.join(__dirname, "../preload/index.js"),
       sandbox: false,
       nodeIntegration: false,
       contextIsolation: true,
@@ -51,7 +51,7 @@ function createMainWindow(): void {
     }
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
 }
 
@@ -64,7 +64,7 @@ async function createCoverLetterWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: join(__dirname, "../preload/index.js"),
+      preload: path.join(__dirname, "../preload/index.js"),
     },
   });
 
@@ -77,7 +77,7 @@ async function createCoverLetterWindow() {
     coverLetterWindow.webContents.openDevTools();
   } else {
     await coverLetterWindow.loadFile(
-      join(__dirname, "../renderer/cover-letter-window.html"),
+      path.join(__dirname, "../renderer/cover-letter-window.html"),
     );
   }
 
