@@ -3,18 +3,20 @@ import CopiableTextarea from "./ui/copiable-textarea";
 import TokenCount from "./ui/token-count";
 import type { IpcRendererEvent } from "electron";
 
-function CoverLetterWindow({
-  text,
-  usageData,
-}: {
-  text: string;
-  usageData: { total: number; prompt: number; completion: number };
-}) {
-  const [coverLetterText, setCoverLetterText] = useState(text);
+function CoverLetterWindow() {
+  const [coverLetterText, setCoverLetterText] = useState("");
+  const [usageData, setUsageData] = useState({
+    total: 0,
+    prompt: 0,
+    completion: 0,
+  });
 
   useEffect(() => {
     window.api.handleCoverLetterData((_: IpcRendererEvent, data: any) => {
-      console.log("Received text from main:", data);
+      console.log("Received text from main:", data.text);
+
+      setCoverLetterText(data.text);
+      setUsageData(data.usageData);
     });
   }, []);
 
