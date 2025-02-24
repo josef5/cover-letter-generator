@@ -5,10 +5,15 @@
     "src/main/**/*",
     "src/preload/**/*",
     "src/renderer/lib/schemas/form-schema.ts",
-    "src/renderer/types/chat.ts"
+    "src/renderer/types/chat.ts",
+    "src/types/**/*"
   ],
   "compilerOptions": {
     "composite": true,
-    "types": ["electron-vite/node"]
+    "types": ["electron-vite/node"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@types/*": ["./src/types/*"]
+    }
   }
 }
