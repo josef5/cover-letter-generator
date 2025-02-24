@@ -37,7 +37,7 @@ function CopiableTextarea({
 
   return (
     <div
-      className={`relative flex-1 ${className}`}
+      className={`relative flex-1`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -45,7 +45,7 @@ function CopiableTextarea({
         style={{ whiteSpace: "pre-line" }}
         value={value}
         onChange={onChange}
-        className="box-border h-full border-collapse bg-white px-8 py-12 text-neutral-800"
+        className={`box-border h-full border-collapse bg-white px-8 py-12 text-neutral-800 ${className}`}
       ></Textarea>
       {isHovered && value && (
         <Button
