@@ -8,7 +8,7 @@ function TokenCount({
   className?: string;
 }) {
   return (
-    <div className={`pr-2 text-right text-xs ${className}}`}>{children}</div>
+    <div className={`pr-2 text-right text-xs ${className}`}>{children}</div>
   );
 }
 
