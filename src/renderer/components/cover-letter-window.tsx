@@ -21,7 +21,7 @@ function CoverLetterWindow() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <CopiableTextarea
         value={coverLetterText}
         className="border-none resize-none"
