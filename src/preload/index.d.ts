@@ -1,3 +1,4 @@
+import { CoverLetterData } from "@/types";
 import { ElectronAPI } from "@electron-toolkit/preload";
 
 declare global {
@@ -9,9 +10,9 @@ declare global {
       getSettingsStore: () => Promise<SettingsValues>;
       setSettingsStore: (data: SettingsValues) => Promise<void>;
       fetchCompletion: (data: FormValues) => Promise<ChatResponse>;
-      openCoverLetterWindow: (data: any) => void;
+      openCoverLetterWindow: (data: CoverLetterData) => void;
       handleCoverLetterData: (
-        listener: (event: IpcRendererEvent, ...args: any[]) => void,
+        listener: (event: IpcRendererEvent, data: CoverLetterData) => void,
       ) => IpcRenderer;
     };
   }

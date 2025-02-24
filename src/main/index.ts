@@ -1,3 +1,4 @@
+import { CoverLetterData } from "./../types/index";
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import path from "path";
@@ -51,7 +52,7 @@ function createMainWindow(): void {
   }
 }
 
-async function createCoverLetterWindow(data: any) {
+function createCoverLetterWindow(data: CoverLetterData) {
   coverLetterWindow = new BrowserWindow({
     width: 760,
     height: 900,
@@ -70,14 +71,14 @@ async function createCoverLetterWindow(data: any) {
 
   if (is.dev) {
     if (process.env["ELECTRON_RENDERER_URL"]) {
-      await coverLetterWindow.loadURL(
+      coverLetterWindow.loadURL(
         `${process.env["ELECTRON_RENDERER_URL"]}/cover-letter-window.html`,
       );
     }
 
     coverLetterWindow.webContents.openDevTools();
   } else {
-    await coverLetterWindow.loadFile(
+    coverLetterWindow.loadFile(
       path.join(__dirname, "../renderer/cover-letter-window.html"),
     );
   }

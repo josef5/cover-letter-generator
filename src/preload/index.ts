@@ -1,6 +1,7 @@
-import { FormValues } from "./../renderer/lib/schemas/form-schema";
-import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
+import { CoverLetterData } from "@/types";
 import { electronAPI } from "@electron-toolkit/preload";
+import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
+import { FormValues } from "./../renderer/lib/schemas/form-schema";
 
 // Custom APIs for renderer
 const api = {
@@ -13,10 +14,10 @@ const api = {
     ipcRenderer.invoke("set-settings-store", data),
   fetchCompletion: (data: FormValues) =>
     ipcRenderer.invoke("fetch-completion", data),
-  openCoverLetterWindow: (data: any) =>
+  openCoverLetterWindow: (data: CoverLetterData) =>
     ipcRenderer.send("open-cover-letter-window", data),
   handleCoverLetterData: (
-    listener: (event: IpcRendererEvent, ...args: any[]) => void,
+    listener: (event: IpcRendererEvent, data: CoverLetterData) => void,
   ) => ipcRenderer.on("send-text-to-window", listener),
 };
 

@@ -1,7 +1,8 @@
+import { CoverLetterData } from "@/types";
+import type { IpcRendererEvent } from "electron";
 import { useEffect, useState } from "react";
 import CopiableTextarea from "./ui/copiable-textarea";
 import TokenCount from "./ui/token-count";
-import type { IpcRendererEvent } from "electron";
 
 function CoverLetterWindow() {
   const [coverLetterText, setCoverLetterText] = useState("");
@@ -12,12 +13,14 @@ function CoverLetterWindow() {
   });
 
   useEffect(() => {
-    window.api.handleCoverLetterData((_: IpcRendererEvent, data: any) => {
-      console.log("Received text from main:", data.text);
+    window.api.handleCoverLetterData(
+      (_: IpcRendererEvent, data: CoverLetterData) => {
+        console.log("Received text from main:", data.text);
 
-      setCoverLetterText(data.text);
-      setUsageData(data.usage);
-    });
+        setCoverLetterText(data.text);
+        setUsageData(data.usage);
+      },
+    );
   }, []);
 
   return (
