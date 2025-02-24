@@ -2,6 +2,7 @@
 export default {
   darkMode: ["class"],
   content: ["./src/renderer/index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  safelist: ["bg-white"],
   theme: {
     extend: {
       borderRadius: {
