@@ -74,6 +74,7 @@ async function createCoverLetterWindow(data: any) {
         `${process.env["ELECTRON_RENDERER_URL"]}/cover-letter-window.html`,
       );
     }
+
     coverLetterWindow.webContents.openDevTools();
   } else {
     await coverLetterWindow.loadFile(

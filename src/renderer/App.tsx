@@ -41,16 +41,27 @@ function AppContent() {
     setCoverLetterText(completion?.choices[0].message.content as string);
 
     const {
+      choices: [
+        {
+          message: { content },
+        },
+      ],
       usage: { total_tokens, prompt_tokens, completion_tokens },
     } = completion as ChatResponse;
 
-    setUsageData({
-      total: total_tokens,
-      prompt: prompt_tokens,
-      completion: completion_tokens,
-    });
+    // TODO: Type this object
+    const coverLetterData = {
+      text: content,
+      usage: {
+        total: total_tokens,
+        prompt: prompt_tokens,
+        completion: completion_tokens,
+      },
+    };
 
-    window.api.openCoverLetterWindow({ text: coverLetterText, usageData });
+    window.api.openCoverLetterWindow(coverLetterData);
+
+    console.log("coverLetterText :", completion?.choices[0].message.content);
   }
 
   async function navigateTo(to: "main" | "settings" | "cover-letter") {

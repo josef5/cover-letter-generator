@@ -16,7 +16,7 @@ function CoverLetterWindow() {
       console.log("Received text from main:", data.text);
 
       setCoverLetterText(data.text);
-      setUsageData(data.usageData);
+      setUsageData(data.usage);
     });
   }, []);
 
