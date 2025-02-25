@@ -57,7 +57,6 @@ function createCoverLetterWindow(data: CoverLetterData) {
     width: 760,
     height: 900,
     parent: mainWindow,
-    // modal: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

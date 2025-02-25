@@ -6,3 +6,5 @@ export interface CoverLetterData {
     completion: number;
   };
 }
+
+// TODO: Consolidate all types into one file

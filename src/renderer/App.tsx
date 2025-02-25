@@ -104,6 +104,7 @@ function AppContent() {
           />
 
           {/* Page Two */}
+          {/* TODO: Remove old page component and related functionality */}
           {page === "cover-letter" ? (
             <CoverLetterPage
               text={coverLetterText as string}

@@ -12,11 +12,11 @@ function CoverLetterWindow() {
     completion: 0,
   });
 
+  // TODO: Make savable as word or pdf
+
   useEffect(() => {
     window.api.handleCoverLetterData(
       (_: IpcRendererEvent, data: CoverLetterData) => {
-        console.log("Received text from main:", data.text);
-
         setCoverLetterText(data.text);
         setUsageData(data.usage);
       },
