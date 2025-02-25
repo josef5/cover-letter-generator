@@ -10,7 +10,7 @@ import {
 } from "@/renderer/lib/schemas/form-schema";
 import { getEstimatedTokens, isObjectEmpty } from "@/renderer/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CornerUpRight, Save, Settings } from "lucide-react";
+import { Save, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
@@ -47,7 +47,7 @@ function MainForm({
 }) {
   const [estimatedTokens, setEstimatedTokens] = useState(0);
   const [isMainSettingsSaved, setIsMainSettingsSaved] = useState(true);
-  const { appData, isSettingsValid, coverLetterText } = useAppDataContext();
+  const { appData, isSettingsValid } = useAppDataContext();
   const models = mainFormSchema.shape.model._def.values;
 
   const form = useForm<MainFormValues>({
@@ -327,19 +327,6 @@ function MainForm({
                 >
                   Generate
                 </Button>
-                {coverLetterText && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="self-end"
-                    onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                      event.preventDefault();
-                      onNavigate("cover-letter");
-                    }}
-                  >
-                    <CornerUpRight />
-                  </Button>
-                )}
               </div>
               <TokenCount>
                 Estimated token count in prompt: {estimatedTokens}

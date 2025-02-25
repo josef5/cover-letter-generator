@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { useFetchCoverLetterText } from "./api/useFetchCoverLetterText";
-import CoverLetterPage from "./components/cover-letter-page";
 import MainForm from "./components/main-form";
 import SettingsForm from "./components/settings-form";
 import {
@@ -95,7 +94,7 @@ function AppContent() {
             transform: `translateX(${slide === "left" ? "0" : "-100%"})`,
           }}
         >
-          {/* Page One */}
+          {/* Main Page */}
           <MainForm
             onNavigate={navigateTo}
             onSubmit={handleSubmit}
@@ -103,17 +102,8 @@ function AppContent() {
             error={error}
           />
 
-          {/* Page Two */}
-          {/* TODO: Remove old page component and related functionality */}
-          {page === "cover-letter" ? (
-            <CoverLetterPage
-              text={coverLetterText as string}
-              onNavigate={() => navigateTo("main")}
-              usageData={usageData}
-            />
-          ) : (
-            <SettingsForm onNavigate={() => navigateTo("main")} />
-          )}
+          {/* Settings Page */}
+          <SettingsForm onNavigate={() => navigateTo("main")} />
         </div>
       </div>
     </>
