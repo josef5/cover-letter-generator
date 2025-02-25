@@ -40,7 +40,7 @@ function MainForm({
   isLoading,
   error,
 }: {
-  onNavigate: (to: "settings" | "cover-letter") => void;
+  onNavigate: (/*  to: "settings" | "cover-letter" */) => void;
   onSubmit: (data: FormValues) => void;
   isLoading: boolean;
   error?: string | null;
@@ -162,7 +162,7 @@ function MainForm({
         variant="ghost"
         size="icon"
         className={`absolute right-4 top-4 ${!isSettingsValid ? "text-red-500" : ""}`}
-        onClick={() => onNavigate("settings")}
+        onClick={onNavigate}
         data-testid="settings-button"
       >
         <Settings />

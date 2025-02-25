@@ -2,29 +2,14 @@ import { ReactNode, useState } from "react";
 import { useFetchCoverLetterText } from "./api/useFetchCoverLetterText";
 import MainForm from "./components/main-form";
 import SettingsForm from "./components/settings-form";
-import {
-  AppDataContext,
-  defaultValues,
-  useAppDataContext,
-} from "./contexts/app-data-context";
+import { AppDataContext, defaultValues } from "./contexts/app-data-context";
 import { type FormValues } from "./lib/schemas/form-schema";
-import { sleep } from "./lib/utils";
 import { ChatResponse } from "./types/chat";
+import { CoverLetterData } from "@/types";
 
 function AppContent() {
-  const [page, setPage] = useState<"main" | "settings" | "cover-letter">(
-    "main",
-  );
   const [slide, setSlide] = useState<"left" | "right">("left");
   const { isLoading, error, fetchCoverLetterText } = useFetchCoverLetterText();
-
-  const [usageData, setUsageData] = useState({
-    total: 0,
-    prompt: 0,
-    completion: 0,
-  });
-
-  const { coverLetterText, setCoverLetterText } = useAppDataContext();
 
   async function handleSubmit(data: FormValues) {
     console.log("Request data :", data);
@@ -37,8 +22,6 @@ function AppContent() {
   }
 
   function handleResponse(completion: ChatResponse) {
-    setCoverLetterText(completion?.choices[0].message.content as string);
-
     const {
       choices: [
         {
@@ -48,8 +31,7 @@ function AppContent() {
       usage: { total_tokens, prompt_tokens, completion_tokens },
     } = completion as ChatResponse;
 
-    // TODO: Type this object
-    const coverLetterData = {
+    const coverLetterData: CoverLetterData = {
       text: content,
       usage: {
         total: total_tokens,
@@ -63,22 +45,14 @@ function AppContent() {
     console.log("coverLetterText :", completion?.choices[0].message.content);
   }
 
-  async function navigateTo(to: "main" | "settings" | "cover-letter") {
+  async function navigateTo(to: "main" | "settings") {
     switch (to) {
       case "main":
         setSlide("left");
-        await sleep(550);
-        setPage("main");
         break;
 
       case "settings":
         setSlide("right");
-        setPage("settings");
-        break;
-
-      case "cover-letter":
-        setSlide("right");
-        setPage("cover-letter");
         break;
 
       default:
@@ -96,7 +70,7 @@ function AppContent() {
         >
           {/* Main Page */}
           <MainForm
-            onNavigate={navigateTo}
+            onNavigate={() => navigateTo("settings")}
             onSubmit={handleSubmit}
             isLoading={isLoading}
             error={error}
