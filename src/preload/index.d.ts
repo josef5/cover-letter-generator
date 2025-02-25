@@ -14,6 +14,7 @@ declare global {
       handleCoverLetterData: (
         listener: (event: IpcRendererEvent, data: CoverLetterData) => void,
       ) => IpcRenderer;
+      saveCoverLetter: (text: string) => Promise<void>;
     };
   }
 }

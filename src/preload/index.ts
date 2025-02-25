@@ -19,6 +19,8 @@ const api = {
   handleCoverLetterData: (
     listener: (event: IpcRendererEvent, data: CoverLetterData) => void,
   ) => ipcRenderer.on("send-text-to-window", listener),
+  saveCoverLetter: (text: string) =>
+    ipcRenderer.invoke("save-cover-letter", text),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
