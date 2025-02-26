@@ -11,6 +11,7 @@ import {
   setMainFormSettingsStore,
   setSettingsStore,
 } from "./store";
+import { saveCoverLetter } from "./save-cover-letter";
 
 let mainWindow: BrowserWindow;
 let coverLetterWindow: BrowserWindow;
@@ -142,46 +143,4 @@ ipcMain.handle("set-settings-store", (_, data) => {
   setSettingsStore(data);
 });
 
-// TODO: Move to separate file
-ipcMain.handle("save-cover-letter", async (_, text: string) => {
-  const date = new Date().toISOString().split("T")[0];
-
-  const { filePath } = await dialog.showSaveDialog({
-    filters: [{ name: "Word Document", extensions: ["docx"] }],
-    defaultPath: `Cover-Letter-${date}.docx`,
-  });
-
-  if (!filePath) return;
-
-  const doc = new Document({
-    sections: [
-      {
-        properties: {},
-        children: [
-          new Paragraph({
-            children: [
-              new TextRun({
-                text,
-                font: {
-                  name: "Inter",
-                },
-              }),
-            ],
-          }),
-        ],
-      },
-    ],
-  });
-
-  try {
-    // Save the file
-    const buffer = await Packer.toBuffer(doc);
-    await fs.promises.writeFile(filePath, buffer);
-
-    // Open the file
-    await shell.openPath(filePath);
-  } catch (error) {
-    console.error("Failed to save or open document:", error);
-    throw error; // Propagate error to renderer
-  }
-});
+ipcMain.handle("save-cover-letter", saveCoverLetter);
