@@ -2,7 +2,7 @@ import Store, { Schema } from "electron-store";
 import {
   MainFormValues,
   SettingsValues,
-} from "../renderer/lib/schemas/form-schema";
+} from "@/renderer/lib/schemas/form-schema";
 
 type MainFormSettingsValues = Pick<
   MainFormValues,

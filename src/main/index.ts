@@ -3,7 +3,7 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import * as fs from "fs";
 import path from "path";
-import { CoverLetterData } from "./../types/index";
+import { CoverLetterData } from "@/types/index";
 import { handleFetchCompletion } from "./fetch-completion";
 import {
   getMainFormSettingsStore,
@@ -50,7 +50,7 @@ function createMainWindow(): void {
     }
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "@/renderer/index.html"));
   }
 }
 
@@ -60,11 +60,16 @@ function createCoverLetterWindow(data: CoverLetterData) {
     width: 760,
     height: 900,
     parent: mainWindow,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       preload: path.join(__dirname, "../preload/index.js"),
     },
+  });
+
+  coverLetterWindow.on("ready-to-show", () => {
+    coverLetterWindow.show();
   });
 
   coverLetterWindow.webContents.once("did-finish-load", () => {
@@ -81,7 +86,7 @@ function createCoverLetterWindow(data: CoverLetterData) {
     coverLetterWindow.webContents.openDevTools();
   } else {
     coverLetterWindow.loadFile(
-      path.join(__dirname, "../renderer/cover-letter-window.html"),
+      path.join(__dirname, "@/renderer/cover-letter-window.html"),
     );
   }
 }
@@ -137,6 +142,7 @@ ipcMain.handle("set-settings-store", (_, data) => {
   setSettingsStore(data);
 });
 
+// TODO: Move to separate file
 ipcMain.handle("save-cover-letter", async (_, text: string) => {
   const date = new Date().toISOString().split("T")[0];
 

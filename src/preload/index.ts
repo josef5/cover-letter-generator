@@ -1,7 +1,7 @@
 import { CoverLetterData } from "@/types";
 import { electronAPI } from "@electron-toolkit/preload";
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-import { FormValues } from "./../renderer/lib/schemas/form-schema";
+import { FormValues } from "@/renderer/lib/schemas/form-schema";
 
 // Custom APIs for renderer
 const api = {

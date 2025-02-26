@@ -1,7 +1,7 @@
 import { is } from "@electron-toolkit/utils";
 import { OpenAI } from "openai";
-import type { FormValues } from "../renderer/lib/schemas/form-schema";
-import type { ChatResponse } from "../renderer/types/chat";
+import type { FormValues } from "@/renderer/lib/schemas/form-schema";
+import type { ChatResponse } from "@/renderer/types/chat";
 
 export const handleFetchCompletion = async (
   _: Electron.IpcMainInvokeEvent,
