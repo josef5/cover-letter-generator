@@ -123,11 +123,7 @@ function MainForm({
     async function initializeFormSettings() {
       const storedData = await window.api.getMainFormSettingsStore();
 
-      // TODO: Try reversing the logic so that the condition is not negative
-      if (!isObjectEmpty(storedData)) {
-        form.reset({ ...form.getValues(), ...storedData });
-      } else {
-        // If no settings saved save default values to localStorage
+      if (isObjectEmpty(storedData)) {
         const [model, temperature, wordLimit] = mainFormSettings;
 
         await window.api.setMainFormSettingsStore({
@@ -135,6 +131,8 @@ function MainForm({
           temperature,
           wordLimit,
         });
+      } else {
+        form.reset({ ...form.getValues(), ...storedData });
       }
     }
 
