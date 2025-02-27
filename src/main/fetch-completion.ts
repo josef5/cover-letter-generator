@@ -3,10 +3,10 @@ import { OpenAI } from "openai";
 import type { FormValues } from "@/renderer/lib/schemas/form-schema";
 import type { ChatResponse } from "@/renderer/types/chat";
 
-export const handleFetchCompletion = async (
+export async function handleFetchCompletion(
   _: Electron.IpcMainInvokeEvent,
   formValues: FormValues,
-) => {
+) {
   const DEV_TEST = true;
 
   if (is.dev && DEV_TEST) {
@@ -96,4 +96,4 @@ export const handleFetchCompletion = async (
 
     throw error;
   }
-};
+}
