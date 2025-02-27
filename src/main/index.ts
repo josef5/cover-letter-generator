@@ -38,8 +38,11 @@ function createMainWindow(): void {
     mainWindow.show();
   });
 
+  // Handle external links by opening in default browser
+  // instead of creating new electron windows
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
+
     return { action: "deny" };
   });
 
@@ -51,16 +54,15 @@ function createMainWindow(): void {
     }
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, "@/renderer/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
 }
 
 function createCoverLetterWindow(data: CoverLetterData) {
-  // TODO: Delay launch until ready
   coverLetterWindow = new BrowserWindow({
     width: 760,
     height: 900,
-    parent: mainWindow,
+    parent: mainWindow, // Always shows on top of the main window
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -87,7 +89,7 @@ function createCoverLetterWindow(data: CoverLetterData) {
     coverLetterWindow.webContents.openDevTools();
   } else {
     coverLetterWindow.loadFile(
-      path.join(__dirname, "@/renderer/cover-letter-window.html"),
+      path.join(__dirname, "../renderer/cover-letter-window.html"),
     );
   }
 }
