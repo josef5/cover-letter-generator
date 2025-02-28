@@ -1,17 +1,15 @@
-import { electronApp, is, optimizer } from "@electron-toolkit/utils";
-import { Document, Packer, Paragraph, TextRun } from "docx";
-import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
-import * as fs from "fs";
-import path from "path";
 import { CoverLetterData } from "@/types/index";
+import { electronApp, is, optimizer } from "@electron-toolkit/utils";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
+import path from "path";
 import { handleFetchCompletion } from "./fetch-completion";
+import { saveCoverLetter } from "./save-cover-letter";
 import {
   getMainFormSettingsStore,
   getSettingsStore,
   setMainFormSettingsStore,
   setSettingsStore,
 } from "./store";
-import { saveCoverLetter } from "./save-cover-letter";
 
 let mainWindow: BrowserWindow;
 let coverLetterWindow: BrowserWindow;
@@ -23,8 +21,6 @@ function createMainWindow(): void {
     height: 960,
     show: false,
     autoHideMenuBar: true,
-    // TODO: Add icon
-    // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
       preload: path.join(__dirname, "../preload/index.js"),
       sandbox: false,

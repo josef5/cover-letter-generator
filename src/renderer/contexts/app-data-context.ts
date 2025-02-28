@@ -33,7 +33,6 @@ export const defaultValues: FormValues = {
   },
 } as const;
 
-// TODO: Remove unused and provider?
 export function useAppDataContext() {
   const context = useContext(AppDataContext);
   if (context === undefined) {

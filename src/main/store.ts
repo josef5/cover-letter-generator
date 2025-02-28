@@ -27,7 +27,6 @@ const settingsSchema: SettingsSchema = {
   additionalSettings: { type: "string" },
 };
 
-// TODO: Investigate if the same store can be used for both settings
 const mainFormSettingStore = new Store({
   name: "main-form-settings-store",
   schema: mainFormSettingsSchema,
