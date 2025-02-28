@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun } from "docx";
+import { Document, LineRuleType, Packer, Paragraph, TextRun } from "docx";
 import { dialog, shell } from "electron";
 import * as fs from "fs";
 
@@ -13,19 +13,36 @@ export async function saveCoverLetter(
     defaultPath: `Cover-Letter-${date}.docx`,
   });
 
+  // Units in 'twips'
+  const cm = 566.9;
+  const lineHeight = 240;
+
   if (!filePath) return;
 
   const doc = new Document({
     sections: [
       {
-        properties: {},
+        properties: {
+          page: {
+            margin: {
+              top: 2.5 * cm,
+              right: 1.75 * cm,
+              bottom: 3.5 * cm,
+              left: 1.75 * cm,
+            },
+          },
+        },
         children: [
           new Paragraph({
+            spacing: {
+              line: 1.2 * lineHeight,
+              lineRule: LineRuleType.AUTO,
+            },
             children: [
               new TextRun({
                 text,
                 font: {
-                  name: "Inter",
+                  name: "Arial",
                 },
               }),
             ],
