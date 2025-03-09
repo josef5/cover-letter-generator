@@ -1,6 +1,14 @@
-import { test, expect, type Page, Locator } from "@playwright/test";
+import {
+  test,
+  expect,
+  type Page,
+  type ElectronApplication,
+  // type ElementHandle,
+  Locator,
+  _electron as electron,
+} from "@playwright/test";
 import { describe } from "node:test";
-import mockResponse from "../tests/mock-response.json" with { type: "json" };
+// import mockResponse from "../tests/mock-response.json" with { type: "json" };
 
 let settingsButton: Locator;
 let settingsCloseButton: Locator;
@@ -9,9 +17,9 @@ let mainSettingsSaveButton: Locator;
 
 const apiRoute = "*/**/v1/chat/completions";
 
-// TODO: Implement testing
+// TODO: Figure out how to mock IPC methods
 
-const inputFields = [
+/* const inputFields = [
   {
     element: "input",
     name: "salutation",
@@ -66,9 +74,9 @@ const inputFields = [
     value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     required: true,
   },
-];
+]; */
 
-// Filter out the required input fields that have a default value and are not emptyable
+/* // Filter out the required input fields that have a default value and are not emptyable
 const requiredInputFields = inputFields.filter(
   ({ required, hasDefaultValue }) => required && !hasDefaultValue,
 );
@@ -76,19 +84,32 @@ const requiredInputFields = inputFields.filter(
 const mainFormFields = requiredInputFields.filter(({ page }) => !page);
 const settingsFields = requiredInputFields.filter(
   ({ page }) => page === "settings",
-);
+); */
 
 describe("Main", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+  let electronApp: ElectronApplication;
+  let window: Page;
+  let submitButton: Locator;
+  let settingsButton: Locator;
+  let settingsCloseButton: Locator;
+  let mainSettingsSaveButton: Locator;
 
-    settingsButton = page.getByTestId("settings-button");
-    settingsCloseButton = page.getByTestId("settings-close-button");
-    mainSettingsSaveButton = page.getByTestId("main-settings-save-button");
-    submitButton = page.getByRole("button", { name: "Generate" });
+  test.beforeEach(async ({ page }) => {
+    electronApp = await electron.launch({
+      executablePath:
+        "./dist/mac-arm64/cover-letter-generator-4.app/Contents/MacOS/cover-letter-generator-4",
+      args: ["./out/main/index.js"],
+    });
+
+    window = await electronApp.firstWindow();
+
+    settingsButton = window.getByTestId("settings-button");
+    settingsCloseButton = window.getByTestId("settings-close-button");
+    mainSettingsSaveButton = window.getByTestId("main-settings-save-button");
+    submitButton = window.getByRole("button", { name: "Generate" });
   });
 
-  async function fillOutForm(page: Page, clearFields = false) {
+  /* async function fillOutForm(page: Page, clearFields = false) {
     // Click the settings button to open the settings form
     await settingsButton?.click();
     await page.waitForTimeout(500);
@@ -106,7 +127,7 @@ describe("Main", () => {
     for (const { element, name, value } of mainFormFields) {
       await page.fill(`${element}[name='${name}']`, clearFields ? "" : value);
     }
-  }
+  } */
 
   test("loads ok", async () => {
     await expect(submitButton).toBeVisible();
@@ -117,23 +138,23 @@ describe("Main", () => {
     expect(isDisabled).toBe(true);
   });
 
-  test("should not be submittable when required fields are empty", async ({
+  /* test("should not be submittable when required fields are empty", async ({
     page,
   }) => {
     await fillOutForm(page, true);
 
     const isDisabled = await submitButton?.isDisabled();
     expect(isDisabled).toBe(true);
-  });
+  }); */
 
-  test("should be submittable when required fields are filled", async ({
+  /* test("should be submittable when required fields are filled", async ({
     page,
   }) => {
     await fillOutForm(page);
 
     const isDisabled = await submitButton?.isDisabled();
     expect(isDisabled).toBe(false);
-  });
+  }); */
 
   test("should main settings button be disabled on load", async () => {
     const isDisabled = await mainSettingsSaveButton?.isDisabled();
@@ -141,7 +162,7 @@ describe("Main", () => {
     expect(isDisabled).toBe(true);
   });
 
-  test("should main settings update", async ({ page }) => {
+  /* test("should main settings update", async ({ page }) => {
     await page.fill(`input[name='wordLimit']`, "400");
 
     expect(await mainSettingsSaveButton?.isDisabled()).toBe(false);
@@ -149,9 +170,9 @@ describe("Main", () => {
     await mainSettingsSaveButton?.click();
 
     expect(await mainSettingsSaveButton?.isDisabled()).toBe(true);
-  });
+  }); */
 
-  test("should generate a cover letter", async ({ page }) => {
+  /* test("should generate a cover letter", async ({ page }) => {
     await page.route(apiRoute, async (route) => {
       await route.fulfill({
         status: 200,
@@ -173,9 +194,9 @@ describe("Main", () => {
 
     expect(responsePromise).not.toBeNull();
     await expect(page.getByText("Dear Mock,")).toBeInViewport();
-  });
+  }); */
 
-  test("should display an error message when the API call fails", async ({
+  /* test("should display an error message when the API call fails", async ({
     page,
   }) => {
     await page.route(apiRoute, async (route) => {
@@ -199,5 +220,5 @@ describe("Main", () => {
 
     expect(responsePromise).not.toBeNull();
     await expect(page.getByText("API response is empty")).toBeInViewport();
-  });
+  }); */
 });
