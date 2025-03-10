@@ -5,7 +5,7 @@
     "src/main/**/*",
     "src/preload/**/*",
     "src/renderer/lib/schemas/form-schema.ts",
-    "src/renderer/types/chat.ts",
+    "src/types/chat.ts",
     "src/types/**/*"
   ],
   "compilerOptions": {

@@ -1,13 +1,13 @@
 import { is } from "@electron-toolkit/utils";
 import { OpenAI } from "openai";
 import type { FormValues } from "@/renderer/lib/schemas/form-schema";
-import type { ChatResponse } from "@/renderer/types/chat";
+import type { ChatResponse } from "@/types/chat";
 
 export async function handleFetchCompletion(
   _: Electron.IpcMainInvokeEvent,
   formValues: FormValues,
 ) {
-  const DEV_TEST = true;
+  const DEV_TEST = false;
 
   if (is.dev && DEV_TEST) {
     const data = await import("../../tests/mock-response.json");
@@ -36,7 +36,7 @@ export async function handleFetchCompletion(
   const prompt = `Here is a job description, write a cover letter for this job on behalf of the user: ${jobDescription}.`;
 
   try {
-    const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+    const openai = new OpenAI({ apiKey });
 
     const chatCompletion = await openai.chat.completions.create({
       messages: [

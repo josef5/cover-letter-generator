@@ -4,7 +4,7 @@ import MainForm from "./components/main-form";
 import SettingsForm from "./components/settings-form";
 import { AppDataContext, defaultValues } from "./contexts/app-data-context";
 import { type FormValues } from "./lib/schemas/form-schema";
-import { ChatResponse } from "./types/chat";
+import { ChatResponse } from "@/types/chat";
 import { CoverLetterData } from "@/types";
 
 function AppContent() {
