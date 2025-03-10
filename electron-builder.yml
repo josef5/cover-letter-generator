@@ -1,5 +1,5 @@
 appId: com.cover-letter-generator.app
-productName: cover-letter-generator-4
+productName: cover-letter-generator
 directories:
   buildResources: build
 files:

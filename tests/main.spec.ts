@@ -97,7 +97,7 @@ describe("Main", () => {
   test.beforeEach(async ({ page }) => {
     electronApp = await electron.launch({
       executablePath:
-        "./dist/mac-arm64/cover-letter-generator-4.app/Contents/MacOS/cover-letter-generator-4",
+        "./dist/mac-arm64/cover-letter-generator.app/Contents/MacOS/cover-letter-generator",
       args: ["./out/main/index.js"],
     });
 
