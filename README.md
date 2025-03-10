@@ -1,6 +1,6 @@
-# electron-react-ts-vite
+# Cover Letter Generator
 
-An Electron application with React and TypeScript
+A desktop AI app that generates a cover letter based on a job description and user details. Uses Electron and OpenAI api.
 
 ## Recommended IDE Setup
 
